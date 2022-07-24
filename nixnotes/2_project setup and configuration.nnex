@@ -357,11 +357,109 @@ at</li>
 <div>#9 .NET 6 vs previous versions</div>
 <div>
 <ul>
-<li><br /></li>
+<li>.NET5 support is over quite soon/ or already behind us (when
+the video was captured it was 5 months away)</li>
+<li>.NET6 will have longterm support</li>
+<ul>
+<li><span style="background-color: rgb(255, 255, 0);">so better
+start new projects with .NET6!</span></li>
+</ul>
+<li>a major difference:</li>
+<ul>
+<li>in .NET5 you have a Startup.cs file, and Program.cs</li>
+<li>Program.cs looks like it is built with any version before
+.NET6</li>
+<li>you have your Main function</li>
+<li>the main function executes another function etc.</li>
+</ul>
+<li>another major difference:</li>
+<ul>
+<li>you have builder.Services in .NET6 (in Program.cs) instead of
+just services in Startup.cs</li>
+<li>that WebBuilder is inside Program.cs inside method
+"CreateHostBuilder" in .NET5</li>
+<li>in the Configure method of Startup.cs are the pipeline objects
+etc as in Program.cs in .NET6</li>
+</ul>
+<li><span style="background-color: rgb(255, 255, 0);">.NET6 vs.
+.NET5 look different, but are basically very much the
+same!</span></li>
+<li>most of the things in the course can be done in both .NET6 and
+.NET5</li>
+<ul>
+<li>where it is not possible or completely compatible, the course
+author will point it out</li>
+<li>everything you are able to do in .NET5 you are able to do in
+.NET6</li>
+</ul>
 </ul>
 </div>
 <div><br /></div>
-<div><br /></div>
+<div>#10: CORS configuration</div>
+<div>
+<ul>
+<li>CORS:</li>
+<ul>
+<li>Cross Origin Resource Sharing</li>
+<li>so our API can be accessed by resource by clients that are not
+on the same server</li>
+<li>e.g. you deployed it in your company or on the internet</li>
+<li>and you want others to use your API to access information</li>
+</ul>
+<li>in Program.cs we are adding following line:</li>
+<ul>
+<li>
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<div style=
+"font-family: 'Droid Sans Mono', monospace, monospace; line-height: 19px;">
+<div style=
+"font-family: 'Droid Sans Mono', monospace, monospace; line-height: 19px;">
+<div><span style="color: #9cdcfe;">builder</span>.<span style=
+"color: #9cdcfe;">Services</span>.<span style=
+"color: #dcdcaa;">AddCors</span>(<span style=
+"color: #9cdcfe;">options</span> =&gt; {</div>
+<div><span style="color: #9cdcfe;">options</span>.<span style=
+"color: #dcdcaa;">AddPolicy</span>(<span style=
+"color: #ce9178;">"AllowAll"</span>, <span style=
+"color: #9cdcfe;">b</span> =&gt; <span style=
+"color: #9cdcfe;">b</span>.<span style=
+"color: #dcdcaa;">AllowAnyHeader</span>().<span style=
+"color: #dcdcaa;">AllowAnyOrigin</span>().<span style=
+"color: #dcdcaa;">AllowAnyMethod</span>());</div>
+<div>});</div>
+</div>
+</div>
+</div>
+</li>
+<li>"AllowAll" is just our tag name</li>
+<li>b: our actually security policies</li>
+</ul>
+<li>we actually don't have to set that in the application project;
+we could also change settings on our firewall or other security
+tools on the network!</li>
+<ul>
+<li>however you can allow certain APIs, certain methods from
+specific services etc.</li>
+<li>instead we are giving access to all the resources</li>
+</ul>
+<li>below we add the line:</li>
+<ul>
+<li>
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<span style="color: #9cdcfe;">app</span>.<span style=
+"color: #dcdcaa;">UseCors</span>(<span style=
+"color: #ce9178;">"AllowAll"</span>);</div>
+</li>
+</ul>
+<li>we need to put the settings when</li>
+<ul>
+<li>other systems want to access our API</li>
+</ul>
+<li><br /></li>
+</ul>
+</div>
 <div>______________________</div>
 <div><br /></div>
 <div>other Notes - not from Udemy course:</div>
@@ -408,14 +506,18 @@ top-level statements.</span></div>
 <li>it means you have toplevel C-sharp code in more than one
 file!</li>
 </ul>
+<li>dotnet new gitignore</li>
+<ul>
+<li>to create the gitignore file</li>
+</ul>
 <li><br /></li>
 </ul>
 </div>
 </div>
 </en-note>]]></Content>
-        <ContentLength>14373</ContentLength>
+        <ContentLength>18023</ContentLength>
         <Created>1658664909905</Created>
-        <Updated>1658695014406</Updated>
+        <Updated>1658697378528</Updated>
         <Active>true</Active>
         <UpdateSequenceNumber>0</UpdateSequenceNumber>
         <NotebookGuid>ab5c6417-ba13-4aac-85e5-56c7fcdf13ee</NotebookGuid>
