@@ -1,1 +1,1 @@
-// app.UseCors("AllowAll");
+using Serilog;
