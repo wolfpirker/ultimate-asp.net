@@ -6,11 +6,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HotelListingAPI.VSCode.Models.Country
 {
-    public class CreateCountryDto
+    public class CreateCountryDto : BaseCountryDto
     {
-        [Required]
-        public string Name { get; set; }
-        public string ShortName { get; set; }
+
         
+    }
+
+    public class UpdateCountryDto : BaseCountryDto
+    {
+        public int Id { get; set; }
     }
 }
