@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema; // for ForeignKey attribute
 
 namespace HotelListingAPI.VSCode.Data
 {

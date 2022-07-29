@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+using HotelListingAPI.VSCode.Data;
 
 namespace HotelListingAPI.VSCode.Models.Country
 {
-    public class CreateCountryDto
+    public class GetCountryDto
     {
-        [Required]
+        public int Id {get; set;}
         public string Name { get; set; }
         public string ShortName { get; set; }
-        
     }
 }

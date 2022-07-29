@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelListingAPI.VSCode.Data;
 using HotelListingAPI.VSCode.Models.Country;
+using HotelListingAPI.VSCode.Models.Hotel;
 using AutoMapper;
 
 namespace HotelListingAPI.VSCode.Controllers
@@ -27,25 +28,31 @@ namespace HotelListingAPI.VSCode.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<ActionResult<IEnumerable<CountryDto>>> GetCountries()
         {
             // Select * from Countries,
             var countries = await _context.Countries.ToListAsync();
-            return Ok(countries);
+            // Note: we need a list, see return type!
+            // AutoMapper do not alert about that!
+            var records = _mapper.Map<List<CountryDto>>(countries);
+            return Ok(records);
         }
 
         // GET: api/Countries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountry(int id)
+        public async Task<ActionResult<CountryDto>> GetCountry(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
+            // var country = await _context.Countries.FindAsync(id);   
+            // now we need to also include the list of hotels!:
+            var country = await _context.Countries.Include(q => q.Hotels)
+                .FirstOrDefaultAsync(q => q.Id == id);
 
             if (country == null)
             {
                 return NotFound();
             }
-
-            return Ok(country);
+            var record = _mapper.Map<CountryDto>(country);
+            return Ok(record);
         }
 
         // PUT: api/Countries/5
@@ -82,14 +89,14 @@ namespace HotelListingAPI.VSCode.Controllers
         // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Country>> PostCountry(CreateCountryDto createCountry)
+        public async Task<ActionResult<Country>> PostCountry(CreateCountryDto createCountryDto)
         {
             // var country = new Country{
             //     Name = createCountry.Name,
             //     ShortName = createCountry.ShortName,
             // };
-            var country = _mapper.Map<Country>(createCountry);
-            
+            var country = _mapper.Map<Country>(createCountryDto);
+
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
 
