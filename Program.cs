@@ -3,6 +3,8 @@ using HotelListingAPI.VSCode.Data;
 using Microsoft.EntityFrameworkCore;
 using HotelListingAPI.VSCode.Configuration;
 using HotelListingAPI.VSCode.Utils;
+using HotelListingAPI.VSCode.Contract;
+using HotelListingAPI.VSCode.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // I just go with entering the password at every run; later I might see how it works with Azure Key stores.
 
 var connectionString = builder.Configuration.GetConnectionString("HotelListingDbConnectionString");
-Console.WriteLine("Please enter the Azure database password below:\n");
+Console.WriteLine("Please enter the Azure database password below:");
 string password = Console.ReadLine();
 connectionString = StringHelpers.SafeReplace(connectionString, "PASSWORD", password, true);
 System.Console.WriteLine($"the used connection string is {connectionString}");
@@ -31,6 +33,8 @@ builder.Services.AddCors(options => {
 
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 
 var app = builder.Build();
 
