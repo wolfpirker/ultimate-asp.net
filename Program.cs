@@ -2,14 +2,20 @@ using Serilog;
 using HotelListingAPI.VSCode.Data;
 using Microsoft.EntityFrameworkCore;
 using HotelListingAPI.VSCode.Configuration;
+using HotelListingAPI.VSCode.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// TODO: instead of reading the HotelListingDbConnectionString including password,
-// use Azure Key Store, to keep password safe
+// instead of putting the password into HotelListingDbConnectionString,
+// I just go with entering the password at every run; later I might see how it works with Azure Key stores.
+
 var connectionString = builder.Configuration.GetConnectionString("HotelListingDbConnectionString");
+Console.WriteLine("Please enter the Azure database password below:\n");
+string password = Console.ReadLine();
+connectionString = StringHelpers.SafeReplace(connectionString, "PASSWORD", password, true);
+System.Console.WriteLine($"the used connection string is {connectionString}");
 builder.Services.AddDbContext<HotelListingDbContext>(options => {
     options.UseSqlServer(connectionString);
 });
