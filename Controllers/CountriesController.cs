@@ -100,10 +100,6 @@ namespace HotelListingAPI.VSCode.Controllers
         [HttpPost]
         public async Task<ActionResult<Country>> PostCountry(CreateCountryDto createCountryDto)
         {
-            // var country = new Country{
-            //     Name = createCountry.Name,
-            //     ShortName = createCountry.ShortName,
-            // };
             var country = _mapper.Map<Country>(createCountryDto);
 
             await _countriesRepository.AddAsync(country);

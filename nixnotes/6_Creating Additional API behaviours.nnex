@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE NixNote-Export>
+<nixnote-export version="2" exportType="export" application="NixNote" applicationVersion="2.x">
+    <Note>
+        <Guid>786b142f-baef-4758-bbc4-c0335a081c64</Guid>
+        <Title>Udemy course: Ultimate ASP.NET pt. 6</Title>
+        <Content><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM 'http://xml.evernote.com/pub/enml2.dtd'><en-note style=
+"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+
+<span style="background-color: rgb(255, 255, 0);">Creating
+Additional API Behaviours</span>
+<div>
+<div><br /></div>
+</div>
+<div><span style="background-color: rgb(255, 255, 0);">#35.
+Scaffolding Controller and Actions</span></div>
+<div>
+<div>
+<ul>
+<li>we create a new API controller with Entity Framework</li>
+<ul>
+<li>below Controller we add fie HotelController</li>
+<li>we select Hotel (HotelListing API Data) as Model</li>
+<ul>
+<li>if we use Visual Studio with the Scaffolding feature</li>
+</ul>
+</ul>
+<li>this time I use Visual Studio Code template</li>
+<ul>
+<li><span style=
+"background-color: rgb(255, 255, 0);">api-controller-async</span></li>
+</ul>
+<li>about our GetHotels</li>
+<ul>
+<li>(created by Course instructor via Visual Studio -&gt; API
+controller with Entity Framework)</li>
+<li>with the created controller: we get also the details of the
+country!&nbsp;</li>
+<ul>
+<li>this is like a recursive loop</li>
+<li>we don't want that</li>
+</ul>
+<li><span style="background-color: rgb(255, 255, 0);">instead we
+use the Data Transfer Object</span> to shape the data in the way we
+want</li>
+<ul>
+<li>we wouldn't include the details&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<div>#36. Setup Repository</div>
+<div>
+<ul>
+<li>in this section we work on our Hotel repository&nbsp;</li>
+<ul>
+<li>to replace the datacontext in the controller</li>
+</ul>
+<li>again we start with the interface in
+Contracts/IHotelRepository.cs</li>
+<ul>
+<li>then the implementation of that in Repository folder</li>
+<ul>
+<li>HotelsRepository</li>
+<li>again we inherit that from IGenericRepository, but now with
+object Hotel</li>
+</ul>
+</ul>
+<li>again we need an extra line in Program.cs to register the
+HotelRepository</li>
+<ul>
+<li>
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<span style="color: #9cdcfe;">builder</span>.<span style=
+"color: #9cdcfe;">Services</span>.<span style=
+"color: #dcdcaa;">AddScoped</span>&lt;<span style=
+"color: #4ec9b0;">IHotelsRepository</span>, <span style=
+"color: #4ec9b0;">HotelsRepository</span>&gt;();</div>
+</li>
+</ul>
+<li>I am wondering</li>
+<ul>
+<li>don't we need the Automapper in the HotelController?</li>
+<li>we will need the mapper later on</li>
+</ul>
+<li>instead of blindly following the video:</li>
+<ul>
+<li>I compare what we did before with Countriescontroller</li>
+<li>I also already create or extend the Datatransferobject of
+Hotels</li>
+<li>when it is required/useful I look onto the solution code and
+make notes</li>
+</ul>
+<li>what I note:</li>
+<ul>
+<li>in the BaseHotelDto</li>
+<ul>
+<li>for the CountryId we put following attributes, after
+[Required]</li>
+<li><span style="background-color: rgb(255, 255, 0);">to include a
+number in range 1 to max Int!</span></li>
+<li>
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+[<span style="color: #4ec9b0;">Range</span>(<span style=
+"color: #b5cea8;">1</span>, <span style=
+"color: #569cd6;">int</span>.<span style=
+"color: #4fc1ff;">MaxValue</span>)]
+<div style=
+"font-family: 'Droid Sans Mono', monospace, monospace; line-height: 19px;">
+<span style="color: #569cd6;">public</span> <span style=
+"color: #569cd6;">int</span> <span style=
+"color: #9cdcfe;">CountryId</span> { <span style=
+"color: #569cd6;">get</span>; <span style=
+"color: #569cd6;">set</span>; }</div>
+</div>
+</li>
+</ul>
+</ul>
+<li>not sure whether I noted that in the countriesController
+before:</li>
+<ul>
+<li>but in both Delete and Put we return <span style=
+"background-color: rgb(255, 255, 0);">NoContent()</span></li>
+</ul>
+<li>also we think about the MapperConfig of the HotelsDto</li>
+<ul>
+<li>
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<span style="color: #dcdcaa;">CreateMap</span>&lt;<span style=
+"color: #4ec9b0;">Hotel</span>, <span style=
+"color: #4ec9b0;">HotelDto</span>&gt;().<span style=
+"color: #dcdcaa;">ReverseMap</span>();</div>
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<div style=
+"font-family: 'Droid Sans Mono', monospace, monospace; line-height: 19px;">
+<span style="color: #dcdcaa;">CreateMap</span>&lt;<span style=
+"color: #4ec9b0;">Hotel</span>, <span style=
+"color: #4ec9b0;">CreateHotelDto</span>&gt;().<span style=
+"color: #dcdcaa;">ReverseMap</span>();</div>
+</div>
+</li>
+</ul>
+<li>Testing what works easily - what doesn't at first</li>
+<ul>
+<li>Get all Hotels</li>
+<ul>
+<li>works</li>
+</ul>
+<li>Get by Id</li>
+<ul>
+<li>with 3 gives success statuscode 200</li>
+<li>but no result<br />
+easy error: I didn't return any result! So I put:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<span style="color: #c586c0;">return</span> <span style=
+"color: #dcdcaa;">Ok</span>(<span style=
+"color: #9cdcfe;">record</span>);</div>
+</li>
+<li>works now</li>
+</ul>
+<li>POST</li>
+<ul>
+<li>I test with values that should work</li>
+<li>and get error status 500<br />
+<span style="background-color: rgb(255, 0, 0);"><font color=
+"#FFFFFF">No route matches the supplied values</font></span></li>
+<li>
+<pre style=
+"box-sizing: border-box; font-size: 12px; max-height: 400px; min-height: 6em; overflow: auto; overflow-wrap: break-word; background-color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; color: white; font-weight: 600; margin-top: 0px; margin-bottom: 0px; padding: 0.5em; white-space: pre-wrap; word-break: break-word; font-variant-ligatures: normal; orphans: 2; widows: 2; background-position: initial initial; background-repeat: initial initial;">
+<code style=
+"box-sizing: border-box; font-family: Consolas, monaco, monospace; font-size: 1em; word-break: break-all; white-space: pre;"><span style="box-sizing: inherit; color: rgb(252, 194, 140);"><span style="font-size: 1em; color: white;">System.InvalidOperationException: </span>No</span><span style="box-sizing: inherit;"> </span><span style="box-sizing: inherit; color: rgb(162, 252, 162);">route</span><span style="box-sizing: inherit;"> </span><span style="box-sizing: inherit; color: rgb(162, 252, 162);">matches</span><span style="box-sizing: inherit;"> </span><span style="box-sizing: inherit; color: rgb(162, 252, 162);">the</span><span style="box-sizing: inherit;"> </span><span style="box-sizing: inherit; color: rgb(162, 252, 162);">supplied</span><span style="box-sizing: inherit;"> </span><span style="box-sizing: inherit; color: rgb(162, 252, 162);">values.</span></code></pre></li>
+<li>seeing this error, I suspect it might be something with the
+routes or other configuration</li>
+<li><span style="background-color: rgb(255, 255, 0);">but no, one
+actual error</span> was:<br />
+&gt; my method to get a Hotel by id is not called GetHotel, but
+GetHotelById, so I had to put this in the POST method:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace; font-size: 14px; line-height: 19px; white-space: pre;">
+<span style="color: #c586c0;">return</span> <span style=
+"color: #dcdcaa;">CreatedAtAction</span>(<span style=
+"color: #ce9178;">"GetHotelById"</span>, <span style=
+"color: #569cd6;">new</span> {<span style=
+"color: #9cdcfe;">id</span> = <span style=
+"color: #9cdcfe;">hotel</span>.<span style=
+"color: #9cdcfe;">Id</span>}, <span style=
+"color: #9cdcfe;">hotel</span>);</div>
+</li>
+<li>but it was still not all; still the same error<br />
+&gt; I noticed it adds the hotels, but the status code is showing
+status code 500<br />
+&gt; <span style="background-color: rgb(255, 255, 0);">I changed
+the action name to GetHotel and restarted<br />
+&gt; now it works!?</span> Was it really this?</li>
+</ul>
+<li>PUT</li>
+<ul>
+<li>works</li>
+</ul>
+<li>DELETE</li>
+<ul>
+<li>works correctly</li>
+</ul>
+</ul>
+</ul>
+<div>#37: Setup Data Transfer Object and Refactor Controller</div>
+<div>
+<ul>
+<li><br /></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</en-note>]]></Content>
+        <ContentLength>8667</ContentLength>
+        <Created>1659285341732</Created>
+        <Updated>1659295868033</Updated>
+        <Active>true</Active>
+        <UpdateSequenceNumber>0</UpdateSequenceNumber>
+        <NotebookGuid>c44d113f-96e0-476e-bfcb-410e145cb349</NotebookGuid>
+        <Attributes>
+            <Author>wolfi</Author>
+        </Attributes>
+        <Dirty>true</Dirty>
+    </Note>
+</nixnote-export>
