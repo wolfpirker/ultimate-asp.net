@@ -6,6 +6,7 @@ using AutoMapper;
 using HotelListingAPI.VSCode.Data;
 using HotelListingAPI.VSCode.Models.Country;
 using HotelListingAPI.VSCode.Models.Hotel;
+using HotelListingAPI.VSCode.Models.Users;
 
 namespace HotelListingAPI.VSCode.Configuration
 {
@@ -19,7 +20,9 @@ namespace HotelListingAPI.VSCode.Configuration
             CreateMap<Country, UpdateCountryDto>().ReverseMap(); 
 
             CreateMap<Hotel, HotelDto>().ReverseMap();
-            CreateMap<Hotel, CreateHotelDto>().ReverseMap();          
+            CreateMap<Hotel, CreateHotelDto>().ReverseMap();
+
+            CreateMap<ApiUserDto, ApiUser>().ReverseMap();    
         }
     }
 }
