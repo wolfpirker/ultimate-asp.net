@@ -5,6 +5,7 @@ using HotelListingAPI.VSCode.Configuration;
 using HotelListingAPI.VSCode.Utils;
 using HotelListingAPI.VSCode.Contract;
 using HotelListingAPI.VSCode.Repository;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,12 @@ System.Console.WriteLine($"the used connection string is {connectionString}");
 builder.Services.AddDbContext<HotelListingDbContext>(options => {
     options.UseSqlServer(connectionString);
 });
+
+builder.Services.AddIdentityCore<ApiUser>()
+    .AddRoles<IdentityRole>()
+    //.AddTokenProvider<DataProtectorTokenProvider<ApiUser>>("HotelListingApi")
+    .AddEntityFrameworkStores<HotelListingDbContext>();
+    //.AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -209,18 +209,29 @@ the action name to GetHotel and restarted<br />
 </ul>
 </ul>
 <div>#37: Setup Data Transfer Object and Refactor Controller</div>
+<div><br /></div>
+<div>
+<div># 38: Testing</div>
 <div>
 <ul>
-<li><br /></li>
+<li>with PUT method</li>
+<ul>
+<li>if id's don't match, we get a status error <span style=
+"background-color: rgb(255, 255, 0);">400 Bad Request</span></li>
+<li>that is because we return BadRequest();</li>
+<li>in Put Action</li>
+<li>we could consider changing that</li>
+</ul>
 </ul>
 </div>
 </div>
 </div>
 </div>
+</div>
 </en-note>]]></Content>
-        <ContentLength>8667</ContentLength>
+        <ContentLength>8982</ContentLength>
         <Created>1659285341732</Created>
-        <Updated>1659295868033</Updated>
+        <Updated>1659296779735</Updated>
         <Active>true</Active>
         <UpdateSequenceNumber>0</UpdateSequenceNumber>
         <NotebookGuid>c44d113f-96e0-476e-bfcb-410e145cb349</NotebookGuid>
