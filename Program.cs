@@ -6,6 +6,7 @@ using HotelListingAPI.VSCode.Utils;
 using HotelListingAPI.VSCode.Contract;
 using HotelListingAPI.VSCode.Repository;
 using Microsoft.AspNetCore.Identity;
+using HotelListingAPI.VSCode.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,7 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IHotelsRepository, HotelsRepository>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 var app = builder.Build();
 
