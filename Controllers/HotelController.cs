@@ -6,6 +6,7 @@ using AutoMapper;
 using HotelListingAPI.VSCode.Contract;
 using HotelListingAPI.VSCode.Data;
 using HotelListingAPI.VSCode.Models.Hotel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 //using HotelListingAPI.VSCode.Models;
@@ -14,6 +15,7 @@ namespace HotelListingAPI.VSCode.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HotelController : ControllerBase
     {
         private readonly IMapper _mapper;
