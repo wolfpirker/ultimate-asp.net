@@ -10,6 +10,7 @@ using HotelListingAPI.VSCode.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using HotelListingAPI.VSCode.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,10 +74,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-} else{
-    System.Console.WriteLine("no development mode");
-}
+} 
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");

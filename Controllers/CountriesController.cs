@@ -11,6 +11,7 @@ using HotelListingAPI.VSCode.Models.Hotel;
 using AutoMapper;
 using HotelListingAPI.VSCode.Contract;
 using Microsoft.AspNetCore.Authorization;
+using HotelListingAPI.VSCode.Exceptions;
 
 namespace HotelListingAPI.VSCode.Controllers
 {
@@ -51,8 +52,9 @@ namespace HotelListingAPI.VSCode.Controllers
 
             if (country == null)
             {
-                _logger.LogWarning($"Record not found in {nameof(GetCountry)} with {id}.");
-                return NotFound();
+                //_logger.LogWarning($"Record not found in {nameof(GetCountry)} with {id}.");
+                //return NotFound();
+                throw new NotFoundException(nameof(GetCountries), id);
             }
             var record = _mapper.Map<CountryDto>(country);
             return Ok(record);
@@ -73,7 +75,7 @@ namespace HotelListingAPI.VSCode.Controllers
             var country = await _countriesRepository.GetAsync(id);
 
             if (country == null){
-                return NotFound();
+                throw new NotFoundException(nameof(GetCountries), id);
             }
 
             _mapper.Map(updateCountryDto, country); // ->  we still need that mapper!
