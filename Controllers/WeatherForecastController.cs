@@ -4,6 +4,7 @@ namespace HotelListingAPI.VSCode.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[ApiVersion("2.0")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
@@ -21,7 +22,6 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
-        _logger.LogInformation("new request, logging test");
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),

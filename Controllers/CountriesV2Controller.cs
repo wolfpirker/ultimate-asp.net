@@ -1,30 +1,30 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HotelListingAPI.VSCode.Data;
-using HotelListingAPI.VSCode.Models.Country;
-using HotelListingAPI.VSCode.Models.Hotel;
+using HotelListing.API.Data;
 using AutoMapper;
-using HotelListingAPI.VSCode.Contract;
 using Microsoft.AspNetCore.Authorization;
+using HotelListingAPI.VSCode.Contract;
+using HotelListingAPI.VSCode.Models.Country;
 using HotelListingAPI.VSCode.Exceptions;
+using HotelListingAPI.VSCode.Data;
 
 namespace HotelListingAPI.VSCode.Controllers
 {
     [Route("api/v{version:apiVersion}/countries")]
     [ApiController]
-    [ApiVersion("1.0", Deprecated = true)]
-    public class CountriesController : ControllerBase
+    [ApiVersion("2.0")]
+    public class CountriesV2Controller : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly ICountriesRepository _countriesRepository;
-        private readonly ILogger<CountriesController> _logger;
+        private readonly ILogger<CountriesV2Controller> _logger;
 
-        public CountriesController(IMapper mapper, ICountriesRepository countriesRepository, ILogger<CountriesController> logger)
+        public CountriesV2Controller(IMapper mapper, ICountriesRepository countriesRepository, ILogger<CountriesV2Controller> logger)
         {
             this._mapper = mapper;
             this._countriesRepository = countriesRepository;
@@ -33,13 +33,10 @@ namespace HotelListingAPI.VSCode.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CountryDto>>> GetCountries()
+        public async Task<ActionResult<IEnumerable<GetCountryDto>>> GetCountries()
         {
-            // Select * from Countries,
             var countries = await _countriesRepository.GetAllAsync();
-            // Note: we need a list, see return type!
-            // AutoMapper do not alert about that!
-            var records = _mapper.Map<List<CountryDto>>(countries);
+            var records = _mapper.Map<List<GetCountryDto>>(countries);
             return Ok(records);
         }
 
@@ -47,18 +44,16 @@ namespace HotelListingAPI.VSCode.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountryDto>> GetCountry(int id)
         {
-            // var country = await _context.Countries.FindAsync(id);   
-            // now we need to also include the list of hotels!:
             var country = await _countriesRepository.GetAsync(id);
 
             if (country == null)
             {
-                //_logger.LogWarning($"Record not found in {nameof(GetCountry)} with {id}.");
-                //return NotFound();
-                throw new NotFoundException(nameof(GetCountries), id);
+                throw new NotFoundException(nameof(GetCountry), id);
             }
-            var record = _mapper.Map<CountryDto>(country);
-            return Ok(record);
+
+            var countryDto = _mapper.Map<CountryDto>(country);
+
+            return Ok(countryDto);
         }
 
         // PUT: api/Countries/5
@@ -69,23 +64,20 @@ namespace HotelListingAPI.VSCode.Controllers
         {
             if (id != updateCountryDto.Id)
             {
-                return BadRequest();
+                return BadRequest("Invalid Record Id");
             }
 
-            // _context.Entry(country).State = EntityState.Modified;
             var country = await _countriesRepository.GetAsync(id);
 
-            if (country == null){
+            if (country == null)
+            {
                 throw new NotFoundException(nameof(GetCountries), id);
             }
 
-            _mapper.Map(updateCountryDto, country); // ->  we still need that mapper!
-            
+            _mapper.Map(updateCountryDto, country);
 
             try
             {
-                // Note: even after our refactoring: we should still catch
-                // the exception DbUpdateConcurrencyException, like below!
                 await _countriesRepository.UpdateAsync(country);
             }
             catch (DbUpdateConcurrencyException)
@@ -99,7 +91,7 @@ namespace HotelListingAPI.VSCode.Controllers
                     throw;
                 }
             }
-          
+
             return NoContent();
         }
 
@@ -118,13 +110,13 @@ namespace HotelListingAPI.VSCode.Controllers
 
         // DELETE: api/Countries/5
         [HttpDelete("{id}")]
-        [Authorize(Roles ="Administrator,User")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
             var country = await _countriesRepository.GetAsync(id);
             if (country == null)
             {
-                return NotFound();
+                throw new NotFoundException(nameof(GetCountries), id);
             }
 
             await _countriesRepository.DeleteAsync(id);
