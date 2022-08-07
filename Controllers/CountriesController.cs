@@ -12,6 +12,7 @@ using AutoMapper;
 using HotelListingAPI.VSCode.Contract;
 using Microsoft.AspNetCore.Authorization;
 using HotelListingAPI.VSCode.Exceptions;
+using HotelListingAPI.VSCode.Models;
 
 namespace HotelListingAPI.VSCode.Controllers
 {
@@ -32,7 +33,7 @@ namespace HotelListingAPI.VSCode.Controllers
         }
 
         // GET: api/Countries
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<CountryDto>>> GetCountries()
         {
             // Select * from Countries,
@@ -41,6 +42,14 @@ namespace HotelListingAPI.VSCode.Controllers
             // AutoMapper do not alert about that!
             var records = _mapper.Map<List<CountryDto>>(countries);
             return Ok(records);
+        }
+
+        // GET: api/Countries/?StartIndex=0&pagesize=25&PageNumber=1
+        [HttpGet]
+        public async Task<ActionResult<PagedResult<GetCountryDto>>> GetPagedCountries([FromQuery] QueryParameters queryParameters)
+        {
+            var pagedCountriesResult = await _countriesRepository.GetAllAsync<GetCountryDto>(queryParameters);
+            return Ok(pagedCountriesResult);
         }
 
         // GET: api/Countries/5
