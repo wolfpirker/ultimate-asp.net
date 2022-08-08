@@ -11,6 +11,8 @@ using HotelListingAPI.VSCode.Data;
 using HotelListingAPI.VSCode.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace HotelListingAPI.VSCode.Repository
 {
