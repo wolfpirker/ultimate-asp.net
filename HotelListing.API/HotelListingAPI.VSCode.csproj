@@ -25,4 +25,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="HotelListing.Data\HotelListing.Data.csproj" />
+    <ProjectReference Include="..\HotelListing.Core\HotelListing.Core.csproj" />
+  </ItemGroup>
+
 </Project>
