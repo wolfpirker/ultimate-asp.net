@@ -1409,14 +1409,143 @@ method is used; following:<br />
 updateCountryDto);</font><br /></li>
 </ul>
 </ul>
-<li><br /></li>
-<li>.</li>
+<li>same style refactoring were prepared in the
+HotelController</li>
+<ul>
+<li>no more mappings and use of the new methods, which are already
+implementing the mapping</li>
+</ul>
+<li>Note:</li>
+<ul>
+<li><span style="background-color: rgb(255, 255, 0);">we
+implemented a new BaseDto before</span></li>
+<li><span style="background-color: rgb(255, 255, 0);">our HotelDto
+and UpdateCountryDto now also inherits from IBaseDto</span></li>
+<li><span style="background-color: rgb(255, 255, 0);">IBaseDto just
+has a Id property</span></li>
+</ul>
+<li>refactoring helps you</li>
+<ul>
+<li>maintain your standards</li>
+<li>not repeat yourself</li>
+<li>and make your code more readable</li>
+<li>if you have to compromise performance and readability, then you
+should consider which is more important</li>
+</ul>
 </ul>
 </div>
 <div>#61: Add JWT Authetication to Swagger Doc<br /></div>
 <div>
 <ul>
-<li>.</li>
+<li>we want to customize our Swagger, so that there is a better
+documentation of the Actions</li>
+<ul>
+<li>we will be adding titles, and human readable information</li>
+</ul>
+<li>we also want to be able to test the JWT Authentication</li>
+<ul>
+<li>even if it is not proteced by the bearer token itself</li>
+<li>so we don't have to use Postman</li>
+</ul>
+<li>in our Program.cs there is the AddSwaggerGen() Method we have
+to expand that with options</li>
+</ul>
+<div><font face="courier new">builder.Services.<span style=
+"background-color: rgb(255, 255, 0);">AddSwaggerGen( options =&gt;
+{</span></font></div>
+<div><font face="courier new"><span style=
+"background-color: rgb(255, 255, 0);">&nbsp; &nbsp;
+options.SwaggerDoc</span>("v1", new
+Microsoft.OpenApi.Models.OpenApiInfo { Title = "Hotel Listing API",
+Version = "v1"});</font></div>
+<div><font face="courier new">&nbsp; &nbsp; <span style=
+"background-color: rgb(255, 0, 255);">options.AddSecurityDefinition</span>("Bearer",
+new OpenApiSecurityScheme{</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+<span style=
+"background-color: rgb(0, 255, 255);">Description</span> = @"JWT
+Authorization header using the Bearer scheme.</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Enter 'Bearer'
+[space] and then your token in the text input below.</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Example: 'Bearer
+12345abcdef'",</font></div>
+<div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+<span style="background-color: rgb(0, 255, 255);">Name</span> =
+"Authorization",</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+<span style="background-color: rgb(0, 255, 255);">In</span> =
+ParameterLocation.Header,</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+<span style="background-color: rgb(0, 255, 255);">Type</span> =
+SecuritySchemeType.ApiKey,</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+<span style="background-color: rgb(0, 255, 255);">Scheme</span> =
+"Bearer"</font></div>
+</div>
+<div><font face="courier new">&nbsp; &nbsp; <span style=
+"background-color: rgb(255, 255, 0);">});</span></font></div>
+<div><font face="courier new">}</font></div>
+<div><font face="courier new">);</font></div>
+<ul>
+<ul>
+<li>when we now restart our server, we see v1 next to the API Title
+(Hotel Listing API)</li>
+<li>also there is a new Authorize button</li>
+<li>Note: so far however it is not possible to authorize on Swagger
+yet, so far it is only documented on Swagger</li>
+</ul>
+<li>to actually add the Bearer Login Functionality we add the
+following:</li>
+</ul>
+<div>
+<div><font face="courier new">&nbsp; &nbsp;
+options.AddSecurityRequirement(new
+OpenApiSecurityRequirement&nbsp;</font></div>
+<div><font face="courier new">&nbsp; &nbsp; {</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+{&nbsp;</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; new <span style=
+"background-color: rgb(255, 0, 255);">OpenApiSecurityScheme</span></font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; {</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; <span style=
+"background-color: rgb(0, 255, 255);">Reference</span> = new
+OpenApiReference {</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Type =
+ReferenceType.SecurityScheme,</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Id = "Bearer"</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; },</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; <span style=
+"background-color: rgb(0, 255, 255);">Scheme</span> =
+"0auth2",</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; <span style=
+"background-color: rgb(0, 255, 255);">Name</span> =
+"Bearer",</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; <span style=
+"background-color: rgb(0, 255, 255);">In</span> =
+ParameterLocation.Header</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; },</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; new List&lt;string&gt;()</font></div>
+<div><font face="courier new">&nbsp; &nbsp; &nbsp; &nbsp;
+}</font></div>
+<div><font face="courier new">&nbsp; &nbsp; });</font></div>
+</div>
+<ul>
+<li>now after restarting our server and refresh Swagger page, we
+see locks on the right-hand side of each endpoint</li>
 <li>-</li>
 <li>.</li>
 <li>.</li>
@@ -1426,9 +1555,9 @@ updateCountryDto);</font><br /></li>
 </ul>
 </div>
 </en-note>]]></Content>
-        <ContentLength>53044</ContentLength>
+        <ContentLength>58665</ContentLength>
         <Created>1659782875641</Created>
-        <Updated>1660044029240</Updated>
+        <Updated>1660048394558</Updated>
         <Active>true</Active>
         <UpdateSequenceNumber>0</UpdateSequenceNumber>
         <NotebookGuid>c44d113f-96e0-476e-bfcb-410e145cb349</NotebookGuid>
