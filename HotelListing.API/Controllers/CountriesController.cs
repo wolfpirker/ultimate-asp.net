@@ -76,26 +76,9 @@ namespace HotelListingAPI.VSCode.Controllers
         [Authorize]
         public async Task<IActionResult> PutCountry(int id, UpdateCountryDto updateCountryDto)
         {
-            if (id != updateCountryDto.Id)
-            {
-                return BadRequest();
-            }
-
-            // _context.Entry(country).State = EntityState.Modified;
-            var country = await _countriesRepository.GetAsync(id);
-
-            if (country == null){
-                throw new NotFoundException(nameof(GetCountries), id);
-            }
-
-            _mapper.Map(updateCountryDto, country); // ->  we still need that mapper!
-            
-
             try
             {
-                // Note: even after our refactoring: we should still catch
-                // the exception DbUpdateConcurrencyException, like below!
-                await _countriesRepository.UpdateAsync(country);
+                await _countriesRepository.UpdateAsync(id, updateCountryDto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -108,7 +91,7 @@ namespace HotelListingAPI.VSCode.Controllers
                     throw;
                 }
             }
-          
+
             return NoContent();
         }
 
@@ -116,28 +99,18 @@ namespace HotelListingAPI.VSCode.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Country>> PostCountry(CreateCountryDto createCountryDto)
+        public async Task<ActionResult<CountryDto>> PostCountry(CreateCountryDto createCountryDto)
         {
-            var country = _mapper.Map<Country>(createCountryDto);
-
-            await _countriesRepository.AddAsync(country);
-
-            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
+            var country = await _countriesRepository.AddAsync<CreateCountryDto, GetCountryDto>(createCountryDto);
+            return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
 
         // DELETE: api/Countries/5
         [HttpDelete("{id}")]
-        [Authorize(Roles ="Administrator,User")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            var country = await _countriesRepository.GetAsync(id);
-            if (country == null)
-            {
-                return NotFound();
-            }
-
             await _countriesRepository.DeleteAsync(id);
-
             return NoContent();
         }
 

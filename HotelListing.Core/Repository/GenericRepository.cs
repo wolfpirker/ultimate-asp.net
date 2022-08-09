@@ -1,6 +1,5 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using HotelListing.VSCode.Models;
 using HotelListingAPI.VSCode.Contract;
 using HotelListingAPI.VSCode.Data;
 using HotelListingAPI.VSCode.Exceptions;

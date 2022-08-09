@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelListing.VSCode.Models
+namespace HotelListingAPI.VSCode.Models
 {
     public interface IBaseDto
     {

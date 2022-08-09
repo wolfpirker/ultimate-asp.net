@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace HotelListingAPI.VSCode.Models.Hotel
 {
 
-    public class HotelDto : BaseHotelDto
+    public class HotelDto : BaseHotelDto, IBaseDto
     {
         public int Id { get; set; }
     }

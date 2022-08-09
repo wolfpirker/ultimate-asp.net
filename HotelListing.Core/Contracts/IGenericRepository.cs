@@ -1,4 +1,3 @@
-using HotelListing.VSCode.Models;
 using HotelListingAPI.VSCode.Models;
 
 namespace HotelListingAPI.VSCode.Contract
